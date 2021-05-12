@@ -58,9 +58,20 @@ body {
     height: 35px;
 }
 
+.text-box{
+    position: absolute;
+    /* EL top y left es en relacion con el DIV Padre. */
+    top: 40%;
+    left: 50%;
+    /* Lo que hace es dejar de hacerlo en el padre, sino en el mismo. Le estas definiendo el centro. */
+    transform: translate(-50%, -50%);
+}
+
 .heading-primary{
     color: #ffff;
-    text-transform: uppercase;    
+    text-transform: uppercase; 
+    /* Esto es para evitar que la animacion quede medio shaky que se mueve raro.    */
+    backface-visibility: hidden;
 }
 
 .heading-primary-main{
@@ -69,11 +80,60 @@ body {
     font-size: 60px;
     font-weight: 400;
     letter-spacing: 35px;
+    /* Aca invocamos la animacion que declaramos abajo, en el name ponemos el nombre de la animacion, y tenemos su duracion. name y duration son lo minimo que tiene que tener
+    para que funcione una animacion. */
+    animation-name:  moveInLeft;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
 }
 
 .heading-primary-sub{
     display: block;
     font-size: 20px;
-    font-weight: 400;
-    letter-spacing: 20px;
+    font-weight: 700;
+    letter-spacing: 17.4px;
+    /* Aca en vez de hacer uno por uno la propiedad, la ponemos y CSS ya sabe como manejarla. */
+    animation: moveInRight 1s ease-out;
+}
+
+/* Haciendo las animaciones; keyframes es la keyword para hacerlo. */
+@keyframes moveInLeft {
+    /* Al comiendo de la animacion (0%) */
+    0% {
+        opacity: 0;
+        /* Queremos que empiece mas desde la izquierda, entonces pones un valor negativo. Si fuera positivo viene de la derecha. */
+        transform: translateX(-100px);
+    }
+
+    80%{
+        /* Aca ponemos 20px porque el titulo sigue de largo y despues vuelve a 0 (en el 100%), como que sigue de largo. */
+        transform: translateX(10px);
+    }
+   
+    /* Cuando termina */
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+
+@keyframes moveInRight {
+    
+    0% {
+        opacity: 0;
+    
+        transform: translateX(100px);
+    }
+
+    80%{
+    
+        transform: translateX(-10px);
+    }
+   
+    
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
 }
