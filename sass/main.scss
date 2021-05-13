@@ -1,0 +1,218 @@
+$color-primary: #7ed56f;
+$color-primary-light: #55c57a;
+$color-primary-dark: #28b485;
+$color-grey-dark: #777;
+$color-white: #fff;
+
+* {
+    /* Esto es para resetear los margenes y padings a traves de todos los browsers. */
+    margin: 0;
+    padding: 0;
+    /* Lo que hace border box es basicamente que la caja tenga un tamanio, y que lo que le agregues de pading o margin sea por afuera del tamanio...no es parte;
+    es decir que una caja de 350px con un borde de 10px, va a tener 360px de tamanio. */
+    box-sizing: border-box;
+}
+
+body {
+    /* La familia importada de Google Fonts, y en caso de que no ande, usar un sans-serif. */
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    /* 1.7 veces mas grande que el default. */
+    line-height: 1.7;
+    color: $color-grey-dark;
+    /* Para darle un padding a toda la pagina y darle ese margen blanco. */
+    padding: 30px; 
+}
+
+.header {
+    /* EL tamanio que va a ocupar la imagen es un 95% */
+    height: 95vh;
+    /* Mapa de degradado con linear gradient, y con "to right" es la direccion. Si le pones bottom, hace diagonal para abajo. El 0.8 es la opacidad del color*/
+    background-image: linear-gradient(
+        to right bottom,
+        rgba($color-primary-light, 0.6), 
+        rgba($color-primary-dark, 0.6)),
+         url(../img/hero.jpg);         
+    /* El cover hace que a medida que vayas achicando y agrandando acompanie horizontalmente */
+    background-size: cover;
+    /* El position top hace que la imagen se cropee desde abajo, quedando fijo lo de arriba para cuando haces resize de la ventana. */
+    background-position: top;
+    position: relative;
+    /* Para darle el corte en diagonal se usa el clip-path y generamos un poligono para cortarlo. Son coordenadas X-Y de izquierda a derecha, de arriba hacia abajo. */
+    clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%)
+    
+}
+
+.logo-box{
+    /* Pones la caja del div que tiene la imagen como absoluto, y a su elemento padre (Header) como relativo. */
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+
+.logo{
+    height: 35px;
+}
+
+.text-box{
+    position: absolute;
+    /* EL top y left es en relacion con el DIV Padre. */
+    top: 40%;
+    left: 50%;
+    /* Lo que hace es dejar de hacerlo en el padre, sino en el mismo. Le estas definiendo el centro. */
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.heading-primary{
+    color: $color-white;
+    text-transform: uppercase; 
+    /* Esto es para evitar que la animacion quede medio shaky que se mueve raro.    */
+    backface-visibility: hidden;
+    margin-bottom: 60px;
+}
+
+.heading-primary-main{
+    /* Como queremos que los dos titulos esten uno arriba del otro, los ponemos como block (Ocupa toda la linea cada elemento.) */
+    display: block;
+    font-size: 60px;
+    font-weight: 400;
+    letter-spacing: 35px;
+    /* Aca invocamos la animacion que declaramos abajo, en el name ponemos el nombre de la animacion, y tenemos su duracion. name y duration son lo minimo que tiene que tener
+    para que funcione una animacion. */
+    animation-name:  moveInLeft;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+}
+
+.heading-primary-sub{
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 30px;
+    /* Aca en vez de hacer uno por uno la propiedad, la ponemos y CSS ya sabe como manejarla. */
+    animation: moveInRight 1s ease-out;
+}
+
+/* Haciendo las animaciones; keyframes es la keyword para hacerlo. */
+@keyframes moveInLeft {
+    /* Al comiendo de la animacion (0%) */
+    0% {
+        opacity: 0;
+        /* Queremos que empiece mas desde la izquierda, entonces pones un valor negativo. Si fuera positivo viene de la derecha. */
+        transform: translateX(-100px);
+    }
+
+    80%{
+        /* Aca ponemos 20px porque el titulo sigue de largo y despues vuelve a 0 (en el 100%), como que sigue de largo. */
+        transform: translateX(10px);
+    }
+   
+    /* Cuando termina */
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+
+@keyframes moveInRight {
+    
+    0% {
+        opacity: 0;
+    
+        transform: translateX(100px);
+    }
+
+    80%{
+    
+        transform: translateX(-10px);
+    }
+   
+    
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+@keyframes moveInBottom {
+    
+    0% {
+        opacity: 0;
+    
+        transform: translateY(50px);
+    }   
+    
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+/* Link es una pseudo-clase, son estados especiales de un selector. */
+.btn:link,
+.btn:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    display: inline-block;    
+    border-radius: 100px;
+    /* Aca lo que hace es aplicar todos los efectos y su duracion. */
+    transition: all .2s;
+    position: relative;    
+}
+
+.btn-animated{
+    animation: moveInBottom 1s ease-in-out .3s;
+    /* Esto lo que hace es aplicar los estilos antes de que cargue, cosa de que no aparezca el boton y despues haga la animacion. */
+    animation-fill-mode: backwards;
+}
+
+.btn:hover{
+    transform: translateY(-3px);
+    /* El primero es offeset en X, el segundo es offset en Y, el tercer value es el blur, el cuarto es el color de la sombra y su opacidad. */
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, .2);
+}
+
+/* Cuando clickeamos el boton es active, el -1 es en relacion a su estado COMUN, no es que se acumula con el hover. Se hace lo mismo de box shadow que lo de arriba, pero reduciendo los
+valores asi parece que la sombra desaparece y da la sensacion a boton clickeado. */
+.btn:active{
+    transform: translateY(-1px);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+}
+
+.btn-white{
+    background-color:$color-white;
+    color:$color-grey-dark;
+}
+
+/* Aca hacemos el efecto de infinito con pseudo elements. Este pseudo element se trata como un child del original. */
+.btn::after{
+    /* Hay que especificar el content y el display si o si por mas de que vaya vacio. */
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    /* Ponemos el transition aca porque este es el estado comun del boton en after. */
+    transition: all .4s;
+    
+}
+
+.btn-white::after{
+    background-color: $color-white;
+}
+
+/* Cuando hovereo el boton, quiero que pase este after. */
+.btn:hover::after{
+    /* Con el scale lo que hacemos el duplicar el tamanio. */
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;    
+}
+
